@@ -7,6 +7,13 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
     <script>
       const socket = io();
 
@@ -14,14 +21,23 @@
         $(function () {
           socket.emit("msg", "test");
           socket.on("cpu", function (msg) {
-            console.log(msg);
-            $("#cpu").text(msg)
+            $("#cpu").text(msg + "% CPU usage");
+          });
+          socket.on("mem", function (msg) {
+            $("#mem").text(msg + "% mem usage");
+          });
+          socket.on("disk", function (msg) {
+            $("#disk").text(msg + "% disk usage");
           });
         });
       });
     </script>
   </head>
-  <body>
-    <p id="cpu"></p>
+  <body class="container">
+    <h1 id="cpu" class="text-center"></h1>
+    <br />
+    <h1 id="mem" class="text-center"></h1>
+    <br />
+    <h1 id="disk" class="text-center"></h1>
   </body>
 </html>
