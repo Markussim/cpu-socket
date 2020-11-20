@@ -2,6 +2,7 @@ const { on } = require("process");
 var os = require("os-utils");
 var os2 = require("os");
 const disk = require("diskusage");
+const si = require("systeminformation");
 const app = require("express")();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
@@ -15,13 +16,19 @@ io.on("connection", (socket) => {
     os.cpuUsage(function (v) {
       socket.emit("cpu", (v * 100).toFixed(1));
     });
-    socket.emit("mem", ((1 - (os2.freemem / os2.totalmem)) * 100).toFixed(1));
+
+    //;
+
     disk
       .check(path)
       .then((info) =>
-        socket.emit("disk", ((1 - (info.free / info.total)) * 100).toFixed(1))
+        socket.emit("disk", ((1 - info.free / info.total) * 100).toFixed(1))
       )
       .catch((err) => console.error(err));
+
+    si.mem()
+      .then((cb) => socket.emit("mem", (( 1 - (cb.available / cb.total)) * 100).toFixed(1)))
+      .catch((error) => console.error(error));
   }, 300);
 
   socket.on("msg", function (data) {
