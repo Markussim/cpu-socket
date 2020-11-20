@@ -15,11 +15,11 @@ io.on("connection", (socket) => {
     os.cpuUsage(function (v) {
       socket.emit("cpu", (v * 100).toFixed(1));
     });
-    socket.emit("mem", ((os2.freemem / os2.totalmem) * 100).toFixed(1));
+    socket.emit("mem", ((1 - (os2.freemem / os2.totalmem)) * 100).toFixed(1));
     disk
       .check(path)
       .then((info) =>
-        socket.emit("disk", ((info.free / info.total) * 100).toFixed(1))
+        socket.emit("disk", ((1 - (info.free / info.total)) * 100).toFixed(1))
       )
       .catch((err) => console.error(err));
   }, 300);
