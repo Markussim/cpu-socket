@@ -29,4 +29,4 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/client/index.html");
 });
 
-server.listen(3000);
+server.listen(1234);
