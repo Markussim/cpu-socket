@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="shortcut icon" type="image/jpg" href="https://marksism.space/favicon.ico"/>
+    <link
+      rel="shortcut icon"
+      type="image/jpg"
+      href="https://marksism.space/favicon.ico"
+    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CPU</title>
@@ -15,6 +19,91 @@
       crossorigin="anonymous"
     />
 
+    <script
+      src="https://pagecdn.io/lib/chart/2.9.3/Chart.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
+
+    <script>
+      var config = {
+        type: "line",
+        data: {
+          datasets: [
+            {
+              label: "CPU %",
+              backgroundColor: window.chartColors.red,
+              borderColor: window.chartColors.red,
+              fill: false,
+            },
+            {
+              label: "MEM %",
+              backgroundColor: window.chartColors.blue,
+              borderColor: window.chartColors.blue,
+              fill: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          title: {
+            display: false,
+            text: "Chart.js Line Chart",
+          },
+          tooltips: {
+            mode: "index",
+            intersect: false,
+          },
+          hover: {
+            mode: "nearest",
+            intersect: true,
+          },
+          scales: {
+            xAxes: [
+              {
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: "",
+                },
+              },
+            ],
+            yAxes: [
+              {
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: "Value",
+                  suggestedMin: 0,
+                  suggestedMax: 100,
+                },
+              },
+            ],
+          },
+        },
+      };
+
+      window.onload = function () {
+        var ctx = document.getElementById("canvas").getContext("2d");
+        window.myLine = new Chart(ctx, config);
+      };
+
+      var colorNames = Object.keys(window.chartColors);
+
+      /*document
+        .getElementById("removeData")
+        .addEventListener("click", function () {
+          config.data.labels.splice(-1, 1); // remove the label first
+
+          config.data.datasets.forEach(function (dataset) {
+            dataset.data.pop();
+          });
+
+          window.myLine.update();
+        });*/
+    </script>
+
     <script>
       const socket = io();
 
@@ -22,9 +111,25 @@
         $(function () {
           socket.emit("msg", "test");
           socket.on("cpu", function (msg) {
+            removeLables();
+
+            if (config.data.datasets.length > 0 && msg > 0) {
+              config.data.labels.push("");
+
+              config.data.datasets[0].data.push(msg);
+
+              window.myLine.update();
+            }
             $("#cpu").text(msg + "% CPU usage");
           });
           socket.on("mem", function (msg) {
+            removeLables();
+
+            if (config.data.datasets.length > 0 && msg > 0) {
+              config.data.datasets[1].data.push(msg);
+
+              window.myLine.update();
+            }
             $("#mem").text(msg + "% mem usage");
           });
           socket.on("disk", function (msg) {
@@ -32,6 +137,17 @@
           });
         });
       });
+
+      function removeLables() {
+        console.log(config.data.labels.length + " Hmm");
+        if (config.data.labels.length > 50) {
+          config.data.labels.shift(); // remove the label first
+
+          config.data.datasets.forEach(function (dataset) {
+            dataset.data.shift();
+          });
+        }
+      }
     </script>
   </head>
   <body class="container">
@@ -40,5 +156,10 @@
     <h1 id="mem" class="text-center"></h1>
     <br />
     <h1 id="disk" class="text-center"></h1>
+    <br />
+
+    <div style="width: 75%; margin: auto">
+      <canvas id="canvas"></canvas>
+    </div>
   </body>
 </html>

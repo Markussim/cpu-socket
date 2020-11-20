@@ -46,4 +46,12 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/client/index.html");
 });
 
+app.get("/chart", (req, res) => {
+  res.sendFile(__dirname + "/client/chart.html");
+});
+
+app.get('/canvas', (req, res) => {
+  res.sendFile(__dirname + "/client/canvasjs.min.js")
+})
+
 server.listen(1234);
