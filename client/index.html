@@ -91,6 +91,8 @@
         });*/
     </script>
 
+    <script src="/psl"></script>
+
     <script>
       /*window.onload = function () {
         var a = document.createElement("a");
@@ -103,13 +105,14 @@
 
       socket.on("connect", () => {
         $(function () {
+          var parsed = psl.parse(window.location.hostname);
+
           var link =
             document.querySelector("link[rel*='icon']") ||
             document.createElement("link");
           link.type = "image/x-icon";
           link.rel = "shortcut icon";
-          link.href =
-            "https://" + window.location.hostname + "/favicon.ico";
+          link.href = "https://" + parsed.domain + "/favicon.ico";
           document.getElementsByTagName("head")[0].appendChild(link);
 
           socket.emit("msg", "test");

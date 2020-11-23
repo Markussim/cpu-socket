@@ -52,4 +52,7 @@ app.get('/canvas', (req, res) => {
   res.sendFile(__dirname + "/client/canvasjs.min.js")
 })
 
+app.get('/psl', (req, res) => {
+  res.sendFile(__dirname + "/client/psl.min.js")
+})
 server.listen(1234);
