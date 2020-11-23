@@ -17,8 +17,6 @@ io.on("connection", (socket) => {
       socket.emit("cpu", (v * 100).toFixed(3));
     });
 
-    //;
-
     disk
       .check(path)
       .then((info) =>

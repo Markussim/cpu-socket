@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link
-      rel="shortcut icon"
-      type="image/jpg"
-      href="https://marksism.space/favicon.ico"
-    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CPU</title>
@@ -50,14 +45,6 @@
           title: {
             display: false,
             text: "Chart.js Line Chart",
-          },
-          tooltips: {
-            mode: "index",
-            intersect: false,
-          },
-          hover: {
-            mode: "nearest",
-            intersect: true,
           },
           scales: {
             xAxes: [
@@ -105,10 +92,26 @@
     </script>
 
     <script>
+      /*window.onload = function () {
+        var a = document.createElement("a");
+        a.href = urls[x];
+
+        document.querySelector("link[rel='shortcut icon']").href = window.location.href.hostname;
+      };*/
+
       const socket = io();
 
       socket.on("connect", () => {
         $(function () {
+          var link =
+            document.querySelector("link[rel*='icon']") ||
+            document.createElement("link");
+          link.type = "image/x-icon";
+          link.rel = "shortcut icon";
+          link.href =
+            "https://" + window.location.hostname + "/favicon.ico";
+          document.getElementsByTagName("head")[0].appendChild(link);
+
           socket.emit("msg", "test");
           socket.on("cpu", function (msg) {
             removeLables();
