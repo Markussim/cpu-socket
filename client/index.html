@@ -120,7 +120,7 @@
 
               window.myLine.update();
             }
-            $("#cpu").text(msg + "% CPU usage");
+            $("#cpu").text(parseFloat(msg).toFixed(1) + "% CPU usage");
           });
           socket.on("mem", function (msg) {
             removeLables();
@@ -130,10 +130,10 @@
 
               window.myLine.update();
             }
-            $("#mem").text(msg + "% mem usage");
+            $("#mem").text(parseFloat(msg).toFixed(1) + "% mem usage");
           });
           socket.on("disk", function (msg) {
-            $("#disk").text(msg + "% disk usage");
+            $("#disk").text(parseFloat(msg).toFixed(1) + "% disk usage");
           });
         });
       });

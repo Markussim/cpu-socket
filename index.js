@@ -14,7 +14,7 @@ io.on("connection", (socket) => {
 
   let interval = setInterval(() => {
     os.cpuUsage(function (v) {
-      socket.emit("cpu", (v * 100).toFixed(1));
+      socket.emit("cpu", (v * 100).toFixed(3));
     });
 
     //;
@@ -22,12 +22,12 @@ io.on("connection", (socket) => {
     disk
       .check(path)
       .then((info) =>
-        socket.emit("disk", ((1 - info.free / info.total) * 100).toFixed(1))
+        socket.emit("disk", ((1 - info.free / info.total) * 100).toFixed(3))
       )
       .catch((err) => console.error(err));
 
     si.mem()
-      .then((cb) => socket.emit("mem", (( 1 - (cb.available / cb.total)) * 100).toFixed(1)))
+      .then((cb) => socket.emit("mem", (( 1 - (cb.available / cb.total)) * 100).toFixed(3)))
       .catch((error) => console.error(error));
   }, 300);
 
