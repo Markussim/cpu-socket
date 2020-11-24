@@ -38,6 +38,12 @@
               borderColor: window.chartColors.blue,
               fill: false,
             },
+            {
+              label: "DISK %",
+              backgroundColor: window.chartColors.green,
+              borderColor: window.chartColors.green,
+              fill: false,
+            },
           ],
         },
         options: {
@@ -139,6 +145,13 @@
             $("#mem").text(parseFloat(msg).toFixed(1) + "% mem usage");
           });
           socket.on("disk", function (msg) {
+            removeLables();
+
+            if (config.data.datasets.length > 0 && msg > 0) {
+              config.data.datasets[2].data.push(msg);
+
+              window.myLine.update();
+            }
             $("#disk").text(parseFloat(msg).toFixed(1) + "% disk usage");
           });
         });
