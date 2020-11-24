@@ -67,8 +67,12 @@
                 display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: "Value",
-                  suggestedMin: 0,
+                  labelString: "%",
+                },
+                ticks: {
+                  //suggestedMin: 0, // minimum will be 0, unless there is a lower value.
+                  // OR //
+                  beginAtZero: true, // minimum value will be 0.
                   suggestedMax: 100,
                 },
               },
