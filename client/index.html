@@ -47,19 +47,23 @@
           ],
         },
         options: {
+          tooltips: {
+            enabled: false,
+          },
           responsive: true,
           title: {
             display: false,
             text: "Chart.js Line Chart",
           },
+          elements: {
+            point: {
+              radius: 0,
+            },
+          },
           scales: {
             xAxes: [
               {
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: "",
-                },
+                display: false,
               },
             ],
             yAxes: [
@@ -163,7 +167,9 @@
 
       function removeLables() {
         console.log(config.data.labels.length + " Hmm");
-        if (config.data.labels.length > 150) {
+        while (
+          config.data.labels.length > document.getElementById("myRange").value
+        ) {
           config.data.labels.shift(); // remove the label first
 
           config.data.datasets.forEach(function (dataset) {
@@ -184,5 +190,15 @@
     <div style="width: 75%; margin: auto">
       <canvas id="canvas"></canvas>
     </div>
+
+    <input
+      type="range"
+      min="10"
+      max="500"
+      value="150"
+      class="slider"
+      id="myRange"
+      oninput="changeWord()"
+    />
   </body>
 </html>
