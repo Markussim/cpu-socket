@@ -1,11 +1,12 @@
-const { on } = require("process");
-var os = require("os-utils");
-var os2 = require("os");
-const disk = require("diskusage");
-const si = require("systeminformation");
-const app = require("express")();
-const server = require("http").createServer(app);
-const io = require("socket.io")(server);
+const { on } = require("process"),
+ os = require("os-utils"),
+ os2 = require("os"),
+ disk = require("diskusage"),
+ si = require("systeminformation"),
+ app = require("express")(),
+ server = require("http").createServer(app),
+ io = require("socket.io")(server),
+ port = 1234;
 
 let path = os2.platform() === "win32" ? "c:" : "/";
 
@@ -55,4 +56,4 @@ app.get('/canvas', (req, res) => {
 app.get('/psl', (req, res) => {
   res.sendFile(__dirname + "/client/psl.min.js")
 })
-server.listen(1234);
+server.listen(port);
